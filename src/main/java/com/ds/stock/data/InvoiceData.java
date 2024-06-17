@@ -1,23 +1,46 @@
 package com.ds.stock.data;
 
-public class AppliedInvoiceForGoodSoldData extends Data{
-    private CustomerData customerData;
-    private String date;
-    private GoodData[] goods;
+import com.ds.stock.data.dataUtils.writer.DataReader;
 
-    public AppliedInvoiceForGoodSoldData(long id, CustomerData customerData, String date, GoodData[] goods) {
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+
+public class InvoiceData extends Data{
+    private long customerDataId;
+    private String date;
+    private String goods;
+
+    public InvoiceData(long id, long customerDataId, String date, String goods) {
         super(id);
-        this.customerData = customerData;
+        this.customerDataId = customerDataId;
         this.date = date;
         this.goods = goods;
     }
 
-    public CustomerData getCustomerData() {
-        return customerData;
+    public InvoiceData(long customerDataId, String date, String goods) {
+        this.customerDataId = customerDataId;
+        this.date = date;
+        this.goods = goods;
     }
 
-    public void setCustomerData(CustomerData customerData) {
-        this.customerData = customerData;
+    public static InvoiceData findInvoiceDataById(long id){
+        AtomicReference<InvoiceData> invoiceData = new AtomicReference<>();
+
+        Objects.requireNonNull(DataReader.getAllInvoice()).forEach(invoiceData1 -> {
+            if(invoiceData1.getId() == id){
+                invoiceData.set(invoiceData1);
+            }
+        });
+
+        return invoiceData.get();
+    }
+
+    public long getCustomerDataId() {
+        return customerDataId;
+    }
+
+    public void setCustomerData(long customerDataId) {
+        this.customerDataId = customerDataId;
     }
 
     public String getDate() {
@@ -28,15 +51,16 @@ public class AppliedInvoiceForGoodSoldData extends Data{
         this.date = date;
     }
 
-    public GoodData[] getGoods() {
+    public String getGoods() {
         return goods;
     }
 
-    public void setGoods(GoodData[] goods) {
+    public void setGoods(String goods) {
         this.goods = goods;
     }
 
+
     public int getGoodsCount() {
-        return goods.length;
+        return 0;
     }
 }

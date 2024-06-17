@@ -1,4 +1,4 @@
-package com.ds.personneldepartment.utils.actionsListeners;
+package com.ds.stock.utils.eventListeners;
 
 public interface IOnAction {
     void onAction();

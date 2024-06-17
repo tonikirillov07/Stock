@@ -2,6 +2,18 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ds/stock/additionalNodes/AdditionalTextField.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ds/stock/additionalNodes/Tile.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ds/stock/database/DatabaseService.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ds/stock/utils/enums/InputTypes.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ds/stock/utils/eventListeners/IOnTextTyping.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/fonts/Inter-BoldItalic.otf" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/fonts/Inter-ExtraBold.ttf" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/images/all_symbols.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/images/icon/info.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/images/info.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/images/telephone.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/ds/stock/images/user.png" charset="windows-1252" />
   </component>
 </project>

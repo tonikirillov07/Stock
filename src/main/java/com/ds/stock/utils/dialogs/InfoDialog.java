@@ -1,9 +1,9 @@
-package com.ds.personneldepartment.utils.dialogs;
+package com.ds.stock.utils.dialogs;
 
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import static com.ds.personneldepartment.utils.Utils.getImage;
+import static com.ds.stock.utils.Utils.getImage;
 
 public class InfoDialog {
     public static void show(String message){

@@ -1,4 +1,4 @@
-package com.ds.personneldepartment.utils;
+package com.ds.stock.utils;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;

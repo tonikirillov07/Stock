@@ -1,14 +1,30 @@
-package com.ds.stock;
+package com.ds.stock.controllers;
 
+import com.ds.stock.mainViewInitializer.BackgroundInitializer;
+import com.ds.stock.mainViewInitializer.MenuBarInitializer;
+import com.ds.stock.pages.MainPage;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class HelloController {
+public class MainController {
     @FXML
-    private Label welcomeText;
+    private VBox mainVbox;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private VBox contentVbox;
+
+    @FXML
+    private MenuBar menuBar;
+
+    public void init(Stage stage) {
+        MenuBarInitializer menuBarInitializer = new MenuBarInitializer();
+        BackgroundInitializer backgroundInitializer = new BackgroundInitializer();
+        menuBarInitializer.init(menuBar, stage);
+        backgroundInitializer.init(mainVbox);
+
+        MainPage mainPage = new MainPage(null, contentVbox, "Данные", menuBar);
+        mainPage.open();
     }
 }

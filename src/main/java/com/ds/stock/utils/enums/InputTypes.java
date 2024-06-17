@@ -1,4 +1,4 @@
-package com.ds.personneldepartment.utils;
+package com.ds.stock.utils.enums;
 
 public enum InputTypes {
     NUMERIC,

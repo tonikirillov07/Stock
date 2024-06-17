@@ -1,6 +1,6 @@
-package com.ds.personneldepartment.utils.settings;
+package com.ds.stock.utils.settings;
 
-import com.ds.personneldepartment.utils.dialogs.ErrorDialog;
+import com.ds.stock.utils.dialogs.ErrorDialog;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileInputStream;

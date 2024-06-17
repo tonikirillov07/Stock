@@ -1,11 +1,11 @@
-package com.ds.personneldepartment.additionalNodes;
+package com.ds.stock.additionalNodes;
 
-import com.ds.personneldepartment.Constants;
-import com.ds.personneldepartment.Main;
-import com.ds.personneldepartment.utils.InputTypes;
-import com.ds.personneldepartment.utils.actionsListeners.IOnAction;
-import com.ds.personneldepartment.utils.actionsListeners.IOnTextTyping;
-import com.ds.personneldepartment.utils.dialogs.ErrorDialog;
+import com.ds.stock.Constants;
+import com.ds.stock.Main;
+import com.ds.stock.utils.dialogs.ErrorDialog;
+import com.ds.stock.utils.enums.InputTypes;
+import com.ds.stock.utils.eventListeners.IOnAction;
+import com.ds.stock.utils.eventListeners.IOnTextTyping;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

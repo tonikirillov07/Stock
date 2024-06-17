@@ -1,8 +1,8 @@
-package com.ds.personneldepartment.additionalNodes;
+package com.ds.stock.additionalNodes;
 
-import com.ds.personneldepartment.Constants;
-import com.ds.personneldepartment.Main;
-import com.ds.personneldepartment.utils.Animations;
+import com.ds.stock.Constants;
+import com.ds.stock.Main;
+import com.ds.stock.utils.Animations;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

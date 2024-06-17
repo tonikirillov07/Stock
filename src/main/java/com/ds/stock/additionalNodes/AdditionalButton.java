@@ -1,8 +1,8 @@
-package com.ds.personneldepartment.additionalNodes;
+package com.ds.stock.additionalNodes;
 
-import com.ds.personneldepartment.Constants;
-import com.ds.personneldepartment.Main;
-import com.ds.personneldepartment.utils.actionsListeners.IOnAction;
+import com.ds.stock.Constants;
+import com.ds.stock.Main;
+import com.ds.stock.utils.eventListeners.IOnAction;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
