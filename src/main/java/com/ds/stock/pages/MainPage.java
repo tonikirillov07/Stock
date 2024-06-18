@@ -89,12 +89,19 @@ public class MainPage extends Page{
 
         Menu menuData = new Menu("Данные");
         MenuItem menuItemAdd = new MenuItem("Добавить");
+        MenuItem menuItemFindGood = new MenuItem("Поиск данных");
+
+        menuItemFindGood.setOnAction(actionEvent -> {
+            DataFinderPage dataFinderPage = new DataFinderPage(this, getContentVbox(), "Поиск данных");
+            dataFinderPage.open();
+        });
+
         menuItemAdd.setOnAction(actionEvent -> {
             AddEditDataPage addEditDataPage = new AddEditDataPage(this, getContentVbox(), "Добавление", false);
             addEditDataPage.open();
         });
 
-        menuData.getItems().add(menuItemAdd);
+        menuData.getItems().addAll(menuItemAdd, menuItemFindGood);
         menuBar.getMenus().add(menuData);
     }
 
@@ -134,19 +141,19 @@ public class MainPage extends Page{
             });
             categoryMenuButton.getProvidersMenuButton().setOnAction(actionEvent -> {
                 defaultCategoryMenuItemsAction(categoryMenuButton.getProvidersMenuButton(), categoryMenuButton);
-                TableViewDataController.displayAllProviders(tableViewController, DataReader.getAllProviders(), this);
+                TableViewDataController.displayProviders(tableViewController, DataReader.getAllProviders(), this);
             });
             categoryMenuButton.getAppliedInvoicesForPurchasedGoodsMenuButton().setOnAction(actionEvent -> {
                 defaultCategoryMenuItemsAction(categoryMenuButton.getAppliedInvoicesForPurchasedGoodsMenuButton(), categoryMenuButton);
-                TableViewDataController.displayAllAppliedInvoicesForPurchasedGoods(tableViewController, DataReader.getAllAppliedInvoiceForPurchaseGoodData(), this);
+                TableViewDataController.displayAppliedInvoicesForPurchasedGoods(tableViewController, DataReader.getAllAppliedInvoiceForPurchaseGoodData(), this);
             });
             categoryMenuButton.getCustomersMenuButton().setOnAction(actionEvent -> {
                 defaultCategoryMenuItemsAction(categoryMenuButton.getCustomersMenuButton(), categoryMenuButton);
-                TableViewDataController.displayAllCustomers(tableViewController, DataReader.getAllCustomers(), this);
+                TableViewDataController.displayCustomers(tableViewController, DataReader.getAllCustomers(), this);
             });
             categoryMenuButton.getAppliedInvoicesForGoodsSoldMenuButton().setOnAction(actionEvent -> {
                 defaultCategoryMenuItemsAction(categoryMenuButton.getAppliedInvoicesForGoodsSoldMenuButton(), categoryMenuButton);
-                TableViewDataController.displayAllInvoices(tableViewController, DataReader.getAllInvoice(), this);
+                TableViewDataController.displayInvoices(tableViewController, DataReader.getAllInvoice(), this);
             });
 
             hBox.getChildren().addAll(categoryMenuButton);

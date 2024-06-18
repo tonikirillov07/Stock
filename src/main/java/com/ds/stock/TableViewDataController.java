@@ -18,7 +18,7 @@ import java.util.List;
 import static com.ds.stock.utils.Utils.getSelectedRowIndexFromTableView;
 
 public final class TableViewDataController {
-    public static void displayAllAppliedInvoicesForPurchasedGoods(@NotNull TableViewController tableViewController, List<AppliedInvoiceForPurchaseGoodData> appliedInvoiceForPurchaseGoodDataList, Page currentPage){
+    public static void displayAppliedInvoicesForPurchasedGoods(@NotNull TableViewController tableViewController, List<AppliedInvoiceForPurchaseGoodData> appliedInvoiceForPurchaseGoodDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -52,7 +52,7 @@ public final class TableViewDataController {
         }
     }
 
-    public static void displayAllCustomers(@NotNull TableViewController tableViewController, List<CustomerData> customerDataList, Page currentPage){
+    public static void displayCustomers(@NotNull TableViewController tableViewController, List<CustomerData> customerDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -87,7 +87,7 @@ public final class TableViewDataController {
 
     }
 
-    public static void displayAllProviders(@NotNull TableViewController tableViewController, List<ProviderData> providerDataList, Page currentPage){
+    public static void displayProviders(@NotNull TableViewController tableViewController, List<ProviderData> providerDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -121,7 +121,7 @@ public final class TableViewDataController {
         }
     }
 
-    public static void displayAllInvoices(@NotNull TableViewController tableViewController, List<InvoiceData> invoiceDataList, Page currentPage){
+    public static void displayInvoices(@NotNull TableViewController tableViewController, List<InvoiceData> invoiceDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
