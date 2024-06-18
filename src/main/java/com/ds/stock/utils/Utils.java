@@ -150,7 +150,12 @@ public final class Utils {
         GoodData[] goodData = new GoodData[ids.length];
 
         for (int i = 0; i < goodData.length; i++) {
-            goodData[i] = GoodData.findGoodById(Long.parseLong(ids[i].trim()));
+            try {
+                long id = Long.parseLong(ids[i].trim());
+                goodData[i] = GoodData.findGoodById(id);
+            }catch (Exception e){
+                ErrorDialog.show(e);
+            }
         }
 
         return goodData;
