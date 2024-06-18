@@ -12,6 +12,7 @@ import com.ds.stock.utils.enums.InputTypes;
 import com.ds.stock.utils.eventListeners.IOnAction;
 import com.ds.stock.utils.settings.SettingsManager;
 import javafx.geometry.Insets;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -110,7 +111,7 @@ public class AddEditDataPage extends Page{
             AdditionalTextField providerIdTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID поставщика", Utils.getImage("images/id.png"), false);
             providerIdTextField.setInputType(InputTypes.NUMERIC);
 
-            AdditionalTextField dateTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Дата", Utils.getImage("images/date.png"), false);
+            DateSelector dateSelector = new DateSelector();
             AdditionalTextField goodsIdsTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID купленных товаров (Например: 1,2,3,..)", Utils.getImage("images/goods.png"), false);
             AdditionalTextField goodsCountTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Количество товаров", Utils.getImage("images/count.png"), false);
             goodsCountTextField.setText("0");
@@ -119,16 +120,21 @@ public class AddEditDataPage extends Page{
 
             if(isEditMode){
                 providerIdTextField.setText(String.valueOf(appliedInvoiceForPurchaseGoodData.getProviderId()));
-                dateTextField.setText(appliedInvoiceForPurchaseGoodData.getDate());
+                dateSelector.getDatePicker().setValue(Utils.convertStringToLocalDate(appliedInvoiceForPurchaseGoodData.getDate()));
                 goodsIdsTextField.setText(Utils.convertGoodsListToString(appliedInvoiceForPurchaseGoodData.getGoods()));
                 goodsCountTextField.setText(String.valueOf(appliedInvoiceForPurchaseGoodData.getGoodsCount()));
             }
 
-            scrollViewContent.getChildren().addAll(providerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField);
+            scrollViewContent.getChildren().addAll(providerIdTextField, dateSelector, goodsIdsTextField, goodsCountTextField);
             createNextButton(() -> {
                 try {
-                    if (Utils.checkFields(providerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
+                    if (Utils.checkFields(providerIdTextField, goodsIdsTextField, goodsCountTextField))
                         return;
+
+                    if(dateSelector.getDatePicker().getValue() == null){
+                        ErrorDialog.show(new NullPointerException("Выберете дату"));
+                        return;
+                    }
 
                     long enteredProviderId = Long.parseLong(providerIdTextField.getText());
 
@@ -154,10 +160,10 @@ public class AddEditDataPage extends Page{
                     }
 
                     if(!isEditMode)
-                        DataWriter.addAppliedInvoicesForPurchaseGoods(new AppliedInvoiceForPurchaseGoodData(dateTextField.getText(), enteredProviderId, Utils.convertStringToGoodDataList(goodsIdsTextField.getText())));
+                        DataWriter.addAppliedInvoicesForPurchaseGoods(new AppliedInvoiceForPurchaseGoodData(dateSelector.getDatePicker().getValue().toString(), enteredProviderId, Utils.convertStringToGoodDataList(goodsIdsTextField.getText())));
                     else {
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.PROVIDER_ID_ROW, providerIdTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
-                        DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.DATE_ROW, dateTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
+                        DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.DATE_ROW, dateSelector.getDatePicker().getValue().toString(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.GOODS_IDS_ROW, goodsIdsTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.GOODS_COUNT_ROW, goodsCountTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                     }
@@ -239,7 +245,7 @@ public class AddEditDataPage extends Page{
             AdditionalTextField customerIdTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID покупателя", Utils.getImage("images/id.png"), false);
             customerIdTextField.setInputType(InputTypes.NUMERIC);
 
-            AdditionalTextField dateTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Дата", Utils.getImage("images/date.png"), false);
+            DateSelector dateSelector = new DateSelector();
             AdditionalTextField goodsIdsTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID проданных товаров (Например: 1,2,3,..)", Utils.getImage("images/goods.png"), false);
             AdditionalTextField goodsCountTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Количество товаров", Utils.getImage("images/count.png"), false);
             goodsCountTextField.setText("0");
@@ -248,16 +254,21 @@ public class AddEditDataPage extends Page{
 
             if(isEditMode){
                 customerIdTextField.setText(String.valueOf(invoiceData.getCustomerDataId()));
-                dateTextField.setText(invoiceData.getDate());
+                dateSelector.getDatePicker().setValue(Utils.convertStringToLocalDate(invoiceData.getDate()));
                 goodsIdsTextField.setText(invoiceData.getGoods());
                 goodsCountTextField.setText(String.valueOf(invoiceData.getGoodsCount()));
             }
 
-            scrollViewContent.getChildren().addAll(customerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField);
+            scrollViewContent.getChildren().addAll(customerIdTextField, dateSelector, goodsIdsTextField, goodsCountTextField);
             createNextButton(() -> {
                 try {
-                    if (Utils.checkFields(customerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
+                    if (Utils.checkFields(customerIdTextField, goodsIdsTextField, goodsCountTextField))
                         return;
+
+                    if(dateSelector.getDatePicker().getValue() == null){
+                        ErrorDialog.show(new NullPointerException("Выберете дату"));
+                        return;
+                    }
 
                     if(CustomerData.findCustomerById(Long.parseLong(customerIdTextField.getText())) == null){
                         customerIdTextField.setError();
@@ -281,10 +292,10 @@ public class AddEditDataPage extends Page{
                     }
 
                     if(!isEditMode)
-                        DataWriter.addInvoice(new InvoiceData(Long.parseLong(customerIdTextField.getText()), dateTextField.getText(), goodsIdsTextField.getText()));
+                        DataWriter.addInvoice(new InvoiceData(Long.parseLong(customerIdTextField.getText()), dateSelector.getDatePicker().getValue().toString(), goodsIdsTextField.getText()));
                     else {
                         DatabaseService.changeValue(Invoices.CUSTOMER_ID_ROW, customerIdTextField.getText(), invoiceData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
-                        DatabaseService.changeValue(Invoices.DATE_ROW, dateTextField.getText(), invoiceData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
+                        DatabaseService.changeValue(Invoices.DATE_ROW, dateSelector.getDatePicker().getValue().toString(), invoiceData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(Invoices.GOODS_IDS_ROW, goodsIdsTextField.getText(), invoiceData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(Invoices.GOODS_COUNT_ROW, goodsCountTextField.getText(), invoiceData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                     }

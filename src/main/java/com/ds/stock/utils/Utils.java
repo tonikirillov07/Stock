@@ -22,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -159,6 +161,12 @@ public final class Utils {
         }
 
         return goodData;
+    }
+
+    public static @NotNull LocalDate convertStringToLocalDate(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return LocalDate.parse(dateString, formatter);
     }
 
     public static GoodData @NotNull [] convertArrayListToDefaultArray(@NotNull List<GoodData> goodDataList){
