@@ -160,4 +160,13 @@ public final class Utils {
 
         return goodData;
     }
+
+    public static GoodData @NotNull [] convertArrayListToDefaultArray(@NotNull List<GoodData> goodDataList){
+        GoodData[] goodsData = new GoodData[goodDataList.size()];
+        for (int i = 0; i < goodDataList.size(); i++) {
+            goodsData[i] = goodDataList.get(i);
+        }
+
+        return goodsData;
+    }
 }

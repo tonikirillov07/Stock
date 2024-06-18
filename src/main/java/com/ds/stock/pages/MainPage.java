@@ -1,11 +1,17 @@
 package com.ds.stock.pages;
 
+import com.ds.stock.Calculations;
 import com.ds.stock.TableViewController;
 import com.ds.stock.TableViewDataController;
 import com.ds.stock.additionalNodes.AdditionalScrollPane;
 import com.ds.stock.additionalNodes.CategoryMenuButton;
+import com.ds.stock.data.AppliedInvoiceForPurchaseGoodData;
+import com.ds.stock.data.GoodData;
+import com.ds.stock.data.InvoiceData;
 import com.ds.stock.data.dataUtils.writer.DataReader;
+import com.ds.stock.utils.Utils;
 import com.ds.stock.utils.dialogs.ErrorDialog;
+import com.ds.stock.utils.dialogs.InfoDialog;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
@@ -14,6 +20,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static com.ds.stock.utils.Utils.defaultCategoryMenuItemsAction;
 
@@ -26,6 +37,50 @@ public class MainPage extends Page{
 
         tableViewController = new TableViewController();
         createAddMenuItem(menuBar);
+        createCalculationsMenuItem(menuBar);
+    }
+
+    private void createCalculationsMenuItem(@NotNull MenuBar menuBar) {
+        if(menuBar.getMenus().size() > 2)
+            return;
+
+        MenuItem providersCostMenuItem = new MenuItem("Себестоимость продукции, закупленной у поставщиков");
+        MenuItem customersCostMenuItem = new MenuItem("Себестоимость продукции, реализованной покупателям");
+        MenuItem reserveMenuItem = new MenuItem("Запасы продукции");
+
+        reserveMenuItem.setOnAction(actionEvent -> {
+            int sum = 0;
+            for (AppliedInvoiceForPurchaseGoodData allAppliedInvoiceForPurchaseGoodDatum : Objects.requireNonNull(DataReader.getAllAppliedInvoiceForPurchaseGoodData())) {
+                sum += Calculations.getReserve(allAppliedInvoiceForPurchaseGoodDatum);
+            }
+
+            InfoDialog.show("Запасы продукции: " + sum);
+        });
+
+        customersCostMenuItem.setOnAction(actionEvent -> {
+            List<GoodData> goodDataList = new ArrayList<>();
+
+            for (InvoiceData invoiceData : Objects.requireNonNull(DataReader.getAllInvoice())) {
+                goodDataList.addAll(Arrays.asList(Utils.convertStringToGoodDataList(invoiceData.getGoods())));
+            }
+
+            InfoDialog.show("Себестоимость продукции, реализованной покупателям: " + Calculations.calculateCost(Utils.convertArrayListToDefaultArray(goodDataList)));
+        });
+
+        providersCostMenuItem.setOnAction(actionEvent -> {
+            List<GoodData> goodDataList = new ArrayList<>();
+
+            for (AppliedInvoiceForPurchaseGoodData allAppliedInvoiceForPurchaseGoodDatum : Objects.requireNonNull(DataReader.getAllAppliedInvoiceForPurchaseGoodData())) {
+                goodDataList.addAll(Arrays.asList(allAppliedInvoiceForPurchaseGoodDatum.getGoods()));
+            }
+
+            InfoDialog.show("Себестоимость продукции, закупленной у поставщиков: " + Calculations.calculateCost(Utils.convertArrayListToDefaultArray(goodDataList)));
+        });
+
+        Menu menuCalculations = new Menu("Расчеты");
+        menuCalculations.getItems().addAll(providersCostMenuItem, customersCostMenuItem, reserveMenuItem);
+
+        menuBar.getMenus().add(menuCalculations);
     }
 
     private void createAddMenuItem(@NotNull MenuBar menuBar) {
