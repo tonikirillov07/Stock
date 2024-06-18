@@ -4,7 +4,6 @@ import com.ds.stock.Constants;
 import com.ds.stock.data.dataUtils.writer.DataReader;
 import com.ds.stock.database.DatabaseService;
 import com.ds.stock.database.tables.Customers;
-import com.ds.stock.database.tables.Goods;
 import com.ds.stock.utils.dialogs.ErrorDialog;
 import com.ds.stock.utils.settings.SettingsManager;
 import org.jetbrains.annotations.Nullable;
@@ -113,7 +112,7 @@ public class CustomerData extends Data{
         this.telephone = telephone;
     }
 
-    public long getInvoiceData() {
+    public long getInvoiceDataId() {
         return invoiceDataId;
     }
 

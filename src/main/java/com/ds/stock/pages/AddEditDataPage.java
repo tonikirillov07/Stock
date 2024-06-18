@@ -103,7 +103,7 @@ public class AddEditDataPage extends Page{
         }
     }
 
-    private void createAppliedInvoicesForPurchasedGoodsComponents(AppliedInvoiceForPurchaseGoodData appliedInvoiceForPurchaseGoodData) {
+    public void createAppliedInvoicesForPurchasedGoodsComponents(AppliedInvoiceForPurchaseGoodData appliedInvoiceForPurchaseGoodData) {
         try{
             scrollViewContent.getChildren().clear();
 
@@ -117,10 +117,17 @@ public class AddEditDataPage extends Page{
 
             goodsIdsTextField.addOnTextTyping(currentText -> goodsCountTextField.setText(String.valueOf(currentText.split(",").length)));
 
+            if(isEditMode){
+                providerIdTextField.setText(String.valueOf(appliedInvoiceForPurchaseGoodData.getProviderId()));
+                dateTextField.setText(appliedInvoiceForPurchaseGoodData.getDate());
+                goodsIdsTextField.setText(Utils.convertGoodsListToString(appliedInvoiceForPurchaseGoodData.getGoods()));
+                goodsCountTextField.setText(String.valueOf(appliedInvoiceForPurchaseGoodData.getGoodsCount()));
+            }
+
             scrollViewContent.getChildren().addAll(providerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField);
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(providerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
+                    if (Utils.checkFields(providerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
                         return;
 
                     long enteredProviderId = Long.parseLong(providerIdTextField.getText());
@@ -149,7 +156,7 @@ public class AddEditDataPage extends Page{
                     if(!isEditMode)
                         DataWriter.addAppliedInvoicesForPurchaseGoods(new AppliedInvoiceForPurchaseGoodData(dateTextField.getText(), enteredProviderId, Utils.convertStringToGoodDataList(goodsIdsTextField.getText())));
                     else {
-                        DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.PROVIDER_ID_ROW, providerIdTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), Invoices.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
+                        DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.PROVIDER_ID_ROW, providerIdTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.DATE_ROW, dateTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.GOODS_IDS_ROW, goodsIdsTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
                         DatabaseService.changeValue(AppliedInvoicesForPurchaseGoods.GOODS_COUNT_ROW, goodsCountTextField.getText(), appliedInvoiceForPurchaseGoodData.getId(), AppliedInvoicesForPurchaseGoods.TABLE_NAME, SettingsManager.getValue(Constants.CURRENT_DATABASE_FILE_KEY));
@@ -179,9 +186,16 @@ public class AddEditDataPage extends Page{
             AdditionalTextField appliedInvoiceField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID приходной накладной", Utils.getImage("images/invoice.png"), false);
             scrollViewContent.getChildren().addAll(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), appliedInvoiceField);
 
+            if(isEditMode){
+                defaultTextFields.getAdditionalTextFieldName().setText(providerData.getName());
+                defaultTextFields.getAdditionalTextFieldTelephone().setText(providerData.getTelephone());
+                defaultTextFields.getAdditionalTextFieldAddress().setText(providerData.getAddress());
+                appliedInvoiceField.setText(String.valueOf(providerData.getAppliedInvoiceForPurchaseGood()));
+            }
+
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), appliedInvoiceField))
+                    if (Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), appliedInvoiceField))
                         return;
 
                     if (!Utils.checkPhoneNumber(defaultTextFields.getAdditionalTextFieldTelephone().getText()))
@@ -232,10 +246,17 @@ public class AddEditDataPage extends Page{
 
             goodsIdsTextField.addOnTextTyping(currentText -> goodsCountTextField.setText(String.valueOf(currentText.split(",").length)));
 
+            if(isEditMode){
+                customerIdTextField.setText(String.valueOf(invoiceData.getCustomerDataId()));
+                dateTextField.setText(invoiceData.getDate());
+                goodsIdsTextField.setText(invoiceData.getGoods());
+                goodsCountTextField.setText(String.valueOf(invoiceData.getGoodsCount()));
+            }
+
             scrollViewContent.getChildren().addAll(customerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField);
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(customerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
+                    if (Utils.checkFields(customerIdTextField, dateTextField, goodsIdsTextField, goodsCountTextField))
                         return;
 
                     if(CustomerData.findCustomerById(Long.parseLong(customerIdTextField.getText())) == null){
@@ -292,10 +313,17 @@ public class AddEditDataPage extends Page{
             AdditionalTextField invoiceIdTextField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "ID счета-фактуры", Utils.getImage("images/id.png"), false);
             invoiceIdTextField.setInputType(InputTypes.NUMERIC);
 
+            if(isEditMode){
+                defaultTextFields.getAdditionalTextFieldName().setText(customerData.getName());
+                defaultTextFields.getAdditionalTextFieldAddress().setText(customerData.getAddress());
+                defaultTextFields.getAdditionalTextFieldTelephone().setText(customerData.getTelephone());
+                invoiceIdTextField.setText(String.valueOf(customerData.getInvoiceDataId()));
+            }
+
             scrollViewContent.getChildren().addAll(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), invoiceIdTextField);
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), invoiceIdTextField))
+                    if (Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress(), invoiceIdTextField))
                         return;
 
                     if(CustomerData.findCustomerByName(defaultTextFields.getAdditionalTextFieldName().getText()) & !isEditMode){
@@ -344,10 +372,16 @@ public class AddEditDataPage extends Page{
             DefaultTextFields defaultTextFields = new DefaultTextFields();
             defaultTextFields.createTextFields("Название", "images/address.png");
 
+            if(isEditMode){
+                defaultTextFields.getAdditionalTextFieldName().setText(locationData.getName());
+                defaultTextFields.getAdditionalTextFieldAddress().setText(locationData.getAddress());
+                defaultTextFields.getAdditionalTextFieldTelephone().setText(locationData.getTelephone());
+            }
+
             scrollViewContent.getChildren().addAll(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress());
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress()))
+                    if (Utils.checkFields(defaultTextFields.getAdditionalTextFieldName(), defaultTextFields.getAdditionalTextFieldTelephone(), defaultTextFields.getAdditionalTextFieldAddress()))
                         return;
 
                     if (!Utils.checkPhoneNumber(defaultTextFields.getAdditionalTextFieldTelephone().getText()))
@@ -385,11 +419,17 @@ public class AddEditDataPage extends Page{
             AdditionalTextField purchaseCostField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Цена покупки", Utils.getImage("images/cost.png"), false);
             AdditionalTextField saleCostField = new AdditionalTextField(AdditionalTextField.DEFAULT_WIDTH, AdditionalTextField.DEFAULT_HEIGHT, "Цена продажи", Utils.getImage("images/cost.png"), false);
 
-            scrollViewContent.getChildren().addAll(nameField, unitField, purchaseCostField, saleCostField);
+            if(isEditMode){
+                nameField.setText(goodData.getName());
+                unitField.setText(goodData.getUnit());
+                purchaseCostField.setText(String.valueOf(goodData.getPurchaseCost()));
+                saleCostField.setText(String.valueOf(goodData.getSaleCost()));
+            }
 
+            scrollViewContent.getChildren().addAll(nameField, unitField, purchaseCostField, saleCostField);
             createNextButton(() -> {
                 try {
-                    if (!Utils.checkFields(nameField, unitField, purchaseCostField, saleCostField))
+                    if (Utils.checkFields(nameField, unitField, purchaseCostField, saleCostField))
                         return;
 
                     double purchaseCost = Double.parseDouble(purchaseCostField.getText());

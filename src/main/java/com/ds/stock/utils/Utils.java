@@ -7,8 +7,11 @@ import com.ds.stock.data.GoodData;
 import com.ds.stock.utils.dialogs.ErrorDialog;
 import com.ds.stock.utils.dialogs.InfoDialog;
 import com.ds.stock.utils.settings.SettingsManager;
+import javafx.collections.ObservableList;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
@@ -107,6 +110,21 @@ public final class Utils {
         return true;
     }
 
+    public static int getSelectedRowIndexFromTableView(@NotNull TableView tableView){
+        try {
+            ObservableList tablePositionObservableList = tableView.getSelectionModel().getSelectedCells();
+            if (tablePositionObservableList.isEmpty())
+                return -1;
+
+            TablePosition tablePosition = (TablePosition) tablePositionObservableList.get(0);
+            return tablePosition.getRow();
+        }catch (Exception e){
+            ErrorDialog.show(e);
+        }
+
+        return -1;
+    }
+
     public static @NotNull String convertGoodsListToString(GoodData @NotNull [] goodData){
         String[] ids = new String[goodData.length];
         for (int i = 0; i < goodData.length; i++) {
@@ -123,7 +141,7 @@ public final class Utils {
         List<AdditionalTextField> emptyFields = Utils.getEmptyFieldsFromArray(additionalTextFields);
         emptyFields.forEach(AdditionalTextField::setError);
 
-        return emptyFields.isEmpty();
+        return !emptyFields.isEmpty();
     }
 
     @Contract(pure = true)
@@ -132,7 +150,7 @@ public final class Utils {
         GoodData[] goodData = new GoodData[ids.length];
 
         for (int i = 0; i < goodData.length; i++) {
-            goodData[i] = GoodData.findGoodById(Long.parseLong(ids[i]));
+            goodData[i] = GoodData.findGoodById(Long.parseLong(ids[i].trim()));
         }
 
         return goodData;

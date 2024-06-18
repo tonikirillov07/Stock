@@ -1,8 +1,11 @@
 package com.ds.stock;
 
 import com.ds.stock.data.*;
+import com.ds.stock.pages.AddEditDataPage;
+import com.ds.stock.pages.Page;
 import com.ds.stock.utils.Utils;
 import com.ds.stock.utils.dialogs.ErrorDialog;
+import com.ds.stock.utils.enums.DataType;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -10,11 +13,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableColumn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
+import static com.ds.stock.utils.Utils.getSelectedRowIndexFromTableView;
+
 public final class TableViewDataController {
-    public static void displayAllAppliedInvoicesForPurchasedGoods(@NotNull TableViewController tableViewController, List<AppliedInvoiceForPurchaseGoodData> appliedInvoiceForPurchaseGoodDataList){
+    public static void displayAllAppliedInvoicesForPurchasedGoods(@NotNull TableViewController tableViewController, List<AppliedInvoiceForPurchaseGoodData> appliedInvoiceForPurchaseGoodDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -35,12 +39,20 @@ public final class TableViewDataController {
 
             tableViewController.getTableView().getColumns().addAll(idColumn, invoiceIdColumn, dateColumn, goodsIdsColumn, goodsCountColumn);
             tableViewController.getTableView().getItems().addAll(appliedInvoiceForPurchaseGoodDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.APPLIED_INVOICES_FOR_PURCHASED_GOODS, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
         }
     }
 
-    public static void displayAllCustomers(@NotNull TableViewController tableViewController, List<CustomerData> customerDataList){
+    public static void displayAllCustomers(@NotNull TableViewController tableViewController, List<CustomerData> customerDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -57,17 +69,25 @@ public final class TableViewDataController {
             telephoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelephone()));
 
             TableColumn<CustomerData, Long> invoiceIdColumn = new TableColumn<>("ID счета-фактуры");
-            invoiceIdColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getInvoiceData()).asObject());
+            invoiceIdColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getInvoiceDataId()).asObject());
 
             tableViewController.getTableView().getColumns().addAll(idColumn, nameColumn, addressColumn, telephoneColumn, invoiceIdColumn);
             tableViewController.getTableView().getItems().addAll(customerDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.CUSTOMERS, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
         }
 
     }
 
-    public static void displayAllProviders(@NotNull TableViewController tableViewController, List<ProviderData> providerDataList){
+    public static void displayAllProviders(@NotNull TableViewController tableViewController, List<ProviderData> providerDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -88,12 +108,20 @@ public final class TableViewDataController {
 
             tableViewController.getTableView().getColumns().addAll(idColumn, nameColumn, addressColumn, telephoneColumn, invoiceIdColumn);
             tableViewController.getTableView().getItems().addAll(providerDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.PROVIDERS, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
         }
     }
 
-    public static void displayAllInvoices(@NotNull TableViewController tableViewController, List<InvoiceData> invoiceDataList){
+    public static void displayAllInvoices(@NotNull TableViewController tableViewController, List<InvoiceData> invoiceDataList, Page currentPage){
         try{
             tableViewController.clearTableView();
 
@@ -114,12 +142,20 @@ public final class TableViewDataController {
 
             tableViewController.getTableView().getColumns().addAll(idColumn, customerIdColumn, dateColumn, goodsIdColumn, goodsCountColumn);
             tableViewController.getTableView().getItems().addAll(invoiceDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.INVOICES, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
         }
     }
 
-    public static void displayLocations(@NotNull TableViewController tableViewController, List<LocationData> locationDataList){
+    public static void displayLocations(@NotNull TableViewController tableViewController, List<LocationData> locationDataList, Page currentPage){
         try {
             tableViewController.clearTableView();
 
@@ -137,12 +173,20 @@ public final class TableViewDataController {
 
             tableViewController.getTableView().getColumns().addAll(idColumn, nameColumn, addressColumn, telephoneColumn);
             tableViewController.getTableView().getItems().addAll(locationDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.LOCATIONS, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
         }
     }
 
-    public static void displayGoods(@NotNull TableViewController tableViewController, List<GoodData> goodDataList){
+    public static void displayGoods(@NotNull TableViewController tableViewController, List<GoodData> goodDataList, Page currentPage){
         try {
             tableViewController.clearTableView();
 
@@ -163,8 +207,30 @@ public final class TableViewDataController {
 
             tableViewController.getTableView().getColumns().addAll(idColumn, nameColumn, unitColumn, purchaseCostColumn, saleCostColumn);
             tableViewController.getTableView().getItems().addAll(goodDataList);
+
+            tableViewController.getTableView().setOnMouseClicked(mouseEvent -> {
+                int selectedIndex = getSelectedRowIndexFromTableView(tableViewController.getTableView());
+                if(selectedIndex < 0)
+                    return;
+
+                openEditPage(currentPage, DataType.GOODS, (Data) tableViewController.getTableView().getItems().get(selectedIndex));
+            });
         }catch (Exception e){
             ErrorDialog.show(e);
+        }
+    }
+
+    private static void openEditPage(Page currentPage, @NotNull DataType dataType, Data data) {
+        AddEditDataPage editDataPage = new AddEditDataPage(currentPage, currentPage.getContentVbox(), "Редактирование", true);
+        editDataPage.open();
+
+        switch (dataType){
+            case GOODS -> editDataPage.createGoodsComponents((GoodData) data);
+            case INVOICES -> editDataPage.createInvoicesComponents((InvoiceData) data);
+            case CUSTOMERS -> editDataPage.createCustomerComponents((CustomerData) data);
+            case LOCATIONS -> editDataPage.createLocationsComponents((LocationData) data);
+            case PROVIDERS -> editDataPage.createProviderComponents((ProviderData) data);
+            case APPLIED_INVOICES_FOR_PURCHASED_GOODS -> editDataPage.createAppliedInvoicesForPurchasedGoodsComponents((AppliedInvoiceForPurchaseGoodData) data);
         }
     }
 }

@@ -35,8 +35,6 @@ public class AppliedInvoiceForPurchaseGoodData extends Data{
     }
 
     public static @Nullable AppliedInvoiceForPurchaseGoodData findAppliedInvoiceForPurchaseGoodDataById(long id){
-        AppliedInvoiceForPurchaseGoodData appliedInvoiceForPurchaseGoodData = null;
-
         List<AppliedInvoiceForPurchaseGoodData> appliedInvoiceForPurchaseGoodDataList = DataReader.getAllAppliedInvoiceForPurchaseGoodData();
 
         assert appliedInvoiceForPurchaseGoodDataList != null;

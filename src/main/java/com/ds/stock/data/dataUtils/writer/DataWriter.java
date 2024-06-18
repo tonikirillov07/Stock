@@ -67,7 +67,7 @@ public final class DataWriter {
             preparedStatement.setString(1, customerData.getName());
             preparedStatement.setString(2, customerData.getAddress());
             preparedStatement.setString(3, customerData.getTelephone());
-            preparedStatement.setObject(4, customerData.getInvoiceData());
+            preparedStatement.setObject(4, customerData.getInvoiceDataId());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();

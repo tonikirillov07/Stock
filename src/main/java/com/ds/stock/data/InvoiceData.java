@@ -1,6 +1,7 @@
 package com.ds.stock.data;
 
 import com.ds.stock.data.dataUtils.writer.DataReader;
+import com.ds.stock.utils.Utils;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,6 +62,6 @@ public class InvoiceData extends Data{
 
 
     public int getGoodsCount() {
-        return 0;
+        return Utils.convertStringToGoodDataList(goods).length;
     }
 }
